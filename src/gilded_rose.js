@@ -12,21 +12,50 @@ class Shop {
   }
   updateQuality() {
     // First of all, find the exceptions
-    const checkExceptionsItems = (name) => {
-      if (name === 'Aged Brie') {
-        return 'Cheeese'
+    const checkItems = (name) => {
+      if (name.toUpperCase().includes('CONJURED')) {
+        return 'Conjured';
+      } if (name === 'Aged Brie') {
+        return 'Cheeese';
       } if (name === 'Backstage passes to a TAFKAL80ETC concert') {
-        return 'Ticket'
+        return 'Ticket';
       } if (name === 'Sulfuras, Hand of Ragnaros') {
-        return 'Legend'
+        return 'Legend';
+      } else {
+        return 'Standard';
       }
     }
     // Maybe with just a function for all the update it will be good
     const updateByTime = (sellIn, quality) => {
     }
 
+    const debugFunction = (item) => {
+      console.log('SellIn:', item.sellIn);
+      console.log('Quality:', item.quality);
+    }
+
     // I can use some value to update them and pass it in the updatedByTime function
     for (var i = 0; i < this.items.length; i++) {
+      let sellInToAdd = 0;
+      let qualityToAdd = 0;
+      console.log('__________')
+      const useCase = checkItems(this.items[i].name);
+      if (useCase === 'Conjured') {
+        console.log('useCase:', useCase);
+        debugFunction(this.items[i]);
+      } else if (useCase === 'Cheeese') {
+        console.log('useCase:', useCase);
+        debugFunction(this.items[i]);
+      } else if (useCase === 'Ticket') {
+        console.log('useCase:', useCase);
+        debugFunction(this.items[i]);
+      } else if (useCase === 'Legend') {
+        console.log('useCase:', useCase);
+        debugFunction(this.items[i]);
+      } else {
+        console.log('useCase:', useCase);
+        debugFunction(this.items[i]);
+      }
       if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
         if (this.items[i].quality > 0) {
           if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
