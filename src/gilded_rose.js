@@ -11,6 +11,20 @@ class Shop {
     this.items = items;
   }
   updateQuality() {
+    // First of all, find the exceptions
+    const checkExceptionsItems = () => {
+    }
+    // Then, if they are standard flow go for standardFlow
+    const standardFlow = () => {
+    }
+    // Otherwise, do all the exceptions
+    const exceptionsFlow = () => {
+    }
+
+    // There we have a long code, not simple to read. To much nested IF
+    // The approach of the code are target by quality, for my eyes it is more
+    // comprehensive to subdivise the work like I will do.
+    // We will see.
     for (var i = 0; i < this.items.length; i++) {
       if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
         if (this.items[i].quality > 0) {
