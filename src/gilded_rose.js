@@ -21,7 +21,7 @@ class Shop {
       } if (name === 'Sulfuras, Hand of Ragnaros') {
         return 'LEGEND';
       } else {
-        return 'Standard';
+        return 'STANDARD';
       }
     }
 
@@ -57,7 +57,8 @@ class Shop {
         if (useCaseSellIn === 'positive' || useCaseSellIn === 'zero') {
           conjuredQuality = checkItemsQuality(actualQuality - 2) === true ? actualQuality - 2 : actualQuality;
         } else {
-          conjuredQuality = checkItemsQuality(actualQuality - actualQuality) === true ? (actualQuality - actualQuality) * 2 : actualQuality;
+          // only -4 my bad
+          conjuredQuality = checkItemsQuality((actualQuality - actualQuality) * 2) === true ? (actualQuality - actualQuality) * 2 : actualQuality;
         }
         this.items[i].quality = conjuredQuality;
       } else if (useCaseName === 'CHEESE') {
@@ -74,12 +75,13 @@ class Shop {
           ticketQuality = checkItemsQuality(actualQuality + 3) === true ? actualQuality + 3 : ticketQuality;
         }
         this.items[i].quality = ticketQuality;
-      } else if (useCaseName === 'Standard') {
+      } else if (useCaseName === 'STANDARD') {
         let standarQuality = 0;
         this.items[i].sellIn = this.items[i].sellIn - 1;
         if (useCaseSellIn === 'positive' || useCaseSellIn === 'zero') {
           standarQuality = checkItemsQuality(actualQuality - 1) === true ? actualQuality - 1 : actualQuality;
         } else {
+          // only - 2, my bad
           standarQuality = checkItemsQuality(actualQuality - actualQuality) === true ? actualQuality - 1 : actualQuality;
         }
         this.items[i].quality = standarQuality;
