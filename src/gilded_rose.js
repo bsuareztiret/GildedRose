@@ -11,12 +11,15 @@ class Shop {
     this.items = items;
   }
   updateQuality() {
-    // First of all, find the exceptions
+    const debugFunction = (item) => {
+      console.log('SellIn:', item.sellIn);
+      console.log('Quality:', item.quality);
+    }
     const checkItemsName = (name) => {
       if (name.toUpperCase().includes('CONJURED')) {
         return 'Conjured';
       } if (name === 'Aged Brie') {
-        return 'Cheeese';
+        return 'Cheese';
       } if (name === 'Backstage passes to a TAFKAL80ETC concert') {
         return 'Ticket';
       } if (name === 'Sulfuras, Hand of Ragnaros') {
@@ -25,125 +28,81 @@ class Shop {
         return 'Standard';
       }
     }
-    // Maybe with just a function for all the update it will be good
     const checkItemsSellIn = (sellIn, type) => {
-      if (sellIn > 0) {
+      if (type === 'Ticket' && sellIn <= 5) {
+        return 'Third';
+      } else if (type === 'Ticket' && sellIn <= 10) {
+        return 'Twice';
+      } else if (sellIn > 0) {
         return 'Positive';
       } else if (sellIn === 0) {
         return 'Zero'
       } else if (sellIn < 0) {
         return 'Negative';
-      } else if (type === 'Ticket' && sellIn <= 5) {
-        return 'Third';
-      } else if (type === 'Ticket' && sellIn <= 10) {
-        return 'Twice';
       }
     }
 
     const checkItemsQuality = (qualityResult, type) => {
-      if (type === 'UP' && quality < 50) {
+      if (type === 'UP' && qualityResult <= 50) {
         return true;
-      } else if (type === 'DOWN' && quality >= 0) {
+      } else if (type === 'DOWN' && qualityResult >= 0) {
         return true;
       } else {
         return false;
       }
     }
 
-    const debugFunction = (item) => {
-      console.log('SellIn:', item.sellIn);
-      console.log('Quality:', item.quality);
-    }
-
-    // I can use some value to update them and pass it in the updatedByTime function
     for (var i = 0; i < this.items.length; i++) {
       const actualQuality = this.items[i].quality;
       const actualSellIn = this.items[i].sellIn;
       // console.log('__________')
       const useCaseName = checkItemsName(this.items[i].name);
-      const useCaseSellIn = checkItemsSellIn(this.items[i].sellIn);
+      const useCaseSellIn = checkItemsSellIn(this.items[i].sellIn, useCaseName);
       if (useCaseName === 'Conjured') {
         // console.log('useCaseName:', useCaseName);
+        // console.log('useCaseSellIn:', useCaseSellIn);
         // debugFunction(this.items[i]);
-
-        // quality down twice
-      } else if (useCaseName === 'Cheeese') {
-        console.log('useCaseName:', useCaseName);
-        debugFunction(this.items[i]);
-
-        // quality up
-      } else if (useCaseName === 'Ticket') {
-        console.log('useCaseName:', useCaseName);
-        debugFunction(this.items[i]);
-
-        this.items[i].quality = actualQuality + 1;
-        // quality up
-        if (useCaseSellIn === 'Twice') {
-          // sellIn 10 days left: quality up
-          this.items[i].quality = actualQuality + 1;
-        } else if (useCaseSellIn === 'Third') {
-          // sellIn 5 days left: quality up
-          this.items[i].quality = actualQuality + 1;
+        let conjuredQuality = 0;
+        if (useCaseSellIn === 'Positive' || useCaseSellIn === 'Zero') {
+          conjuredQuality = checkItemsQuality(actualQuality - 2, 'DOWN') === true ? actualQuality - 2 : actualQuality;
+        } else {
+          conjuredQuality = checkItemsQuality(actualQuality - actualQuality, 'DOWN') === true ? (actualQuality - actualQuality) * 2 : actualQuality;
         }
+        this.items[i].quality = conjuredQuality;
+        this.items[i].sellIn = actualSellIn - 1;
+      } else if (useCaseName === 'Cheese') {
+        // console.log('useCaseName:', useCaseName);
+        // console.log('useCaseSellIn:', useCaseSellIn);
+        // debugFunction(this.items[i]);
+        let cheeseQuality = checkItemsQuality(actualQuality + 1, 'UP') === true ? actualQuality + 1 : actualQuality;
+        this.items[i].quality = cheeseQuality;
+        this.items[i].sellIn = actualSellIn - 1;
+      } else if (useCaseName === 'Ticket') {
+        // console.log('useCaseName:', useCaseName);
+        // console.log('useCaseSellIn:', useCaseSellIn);
+        // debugFunction(this.items[i]);
+        let ticketQuality = checkItemsQuality(actualQuality + 1, 'UP') === true ? actualQuality + 1 : actualQuality;
+        if (useCaseSellIn === 'Twice') {
+          ticketQuality = checkItemsQuality(actualQuality + 2, 'UP') === true ? actualQuality + 2 : ticketQuality;
+        } else if (useCaseSellIn === 'Third') {
+          ticketQuality = checkItemsQuality(actualQuality + 3, 'UP') === true ? actualQuality + 3 : ticketQuality;
+        }
+        // console.log('TICKETQUALITY', ticketQuality);
+        this.items[i].quality = ticketQuality;
+        this.items[i].sellIn = actualSellIn - 1;
       } else if (useCaseName === 'Standard') {
         // console.log('useCaseName:', useCaseName);
+        // console.log('useCaseSellIn:', useCaseSellIn);
         // debugFunction(this.items[i]);
+        let standarQuality = 0;
         this.items[i].sellIn = this.items[i].sellIn - 1;
         if (useCaseSellIn === 'Positive' || useCaseSellIn === 'Zero') {
-          this.items[i].quality = actualQuality - 1;
+          standarQuality = checkItemsQuality(actualQuality - 1, 'DOWN') === true ? actualQuality - 1 : actualQuality;
         } else {
-          this.items[i].quality = actualQuality - actualQuality;
+          standarQuality = checkItemsQuality(actualQuality - actualQuality, 'DOWN') === true ? actualQuality - 1 : actualQuality;
         }
-        // sellIn -1
-        // quality -1
-      } else {
-        console.log('useCaseName:', useCaseName);
-        debugFunction(this.items[i]);
-
-        // Then it is the legend object, he doesn't move
-      }
-      if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-        if (this.items[i].quality > 0) {
-          if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-            this.items[i].quality = this.items[i].quality - 1;
-          }
-        }
-      } else {
-        if (this.items[i].quality < 50) {
-          this.items[i].quality = this.items[i].quality + 1;
-          if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].sellIn < 11) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1;
-              }
-            }
-            if (this.items[i].sellIn < 6) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1;
-              }
-            }
-          }
-        }
-      }
-      if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-        this.items[i].sellIn = this.items[i].sellIn - 1;
-      }
-      if (this.items[i].sellIn < 0) {
-        if (this.items[i].name != 'Aged Brie') {
-          if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].quality > 0) {
-              if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-                this.items[i].quality = this.items[i].quality - 1;
-              }
-            }
-          } else {
-            this.items[i].quality = this.items[i].quality - this.items[i].quality;
-          }
-        } else {
-          if (this.items[i].quality < 50) {
-            this.items[i].quality = this.items[i].quality + 1;
-          }
-        }
+        this.items[i].quality = standarQuality;
+        this.items[i].sellIn = actualSellIn - 1;
       }
     }
 
