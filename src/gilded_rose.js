@@ -26,16 +26,14 @@ class Shop {
     }
 
     const checkItemsSellIn = (sellIn, type) => {
-      if (type === 'TICKET' && sellIn <= 5) {
+      if (sellIn < 0) {
+        return 'negative'
+      } else if (type === 'TICKET' && sellIn <= 5) {
         return 'third';
       } else if (type === 'TICKET' && sellIn <= 10) {
         return 'twice';
-      } else if (sellIn > 0) {
+      } else if (sellIn >= 0) {
         return 'positive';
-      } else if (sellIn === 0) {
-        return 'zero'
-      } else if (sellIn < 0) {
-        return 'negative';
       }
     }
 
@@ -49,21 +47,19 @@ class Shop {
 
     for (var i = 0; i < this.items.length; i++) {
       const actualQuality = this.items[i].quality;
-      const actualSellIn = this.items[i].sellIn;
+      const updatedSellIn = this.items[i].sellIn - 1;
       const useCaseName = checkItemsName(this.items[i].name);
-      const useCaseSellIn = checkItemsSellIn(this.items[i].sellIn, useCaseName);
+      const useCaseSellIn = checkItemsSellIn(updatedSellIn, useCaseName);
       let updatedQuality = 0;
       if (useCaseName === 'CONJURED') {
-        if (useCaseSellIn === 'positive' || useCaseSellIn === 'zero') {
+        if (useCaseSellIn === 'positive') {
           // maybe it will crack here sometimes, I need to investigate
           updatedQuality = checkItemsQuality(actualQuality - 2) === true ? actualQuality - 2 : actualQuality;
         } else {
           updatedQuality = checkItemsQuality(actualQuality - 4) === true ? actualQuality - 4 : 0;
         }
-        // this.items[i].quality = conjuredQuality;
       } else if (useCaseName === 'CHEESE') {
         updatedQuality = checkItemsQuality(actualQuality + 1) === true ? actualQuality + 1 : actualQuality;
-        // this.items[i].quality = cheeseQuality;
       } else if (useCaseName === 'TICKET') {
         updatedQuality = checkItemsQuality(actualQuality + 1) === true ? actualQuality + 1 : actualQuality;
         if (useCaseSellIn === 'negative') {
@@ -74,17 +70,15 @@ class Shop {
         } else if (useCaseSellIn === 'third') {
           updatedQuality = checkItemsQuality(actualQuality + 3) === true ? actualQuality + 3 : updatedQuality;
         }
-        // this.items[i].quality = ticketQuality;
       } else if (useCaseName === 'STANDARD') {
-        if (useCaseSellIn === 'positive' || useCaseSellIn === 'zero') {
+        if (useCaseSellIn === 'positive') {
           updatedQuality = checkItemsQuality(actualQuality - 1) === true ? actualQuality - 1 : actualQuality;
         } else {
           updatedQuality = checkItemsQuality(actualQuality - 2) === true ? actualQuality - 2 : 0;
         }
-        // this.items[i].quality = standarQuality;
       }
       if (useCaseName !== 'LEGEND') {
-        this.items[i].sellIn = actualSellIn - 1;
+        this.items[i].sellIn = updatedSellIn;
         this.items[i].quality = updatedQuality;
       }
     }
