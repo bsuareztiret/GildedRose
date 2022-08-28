@@ -47,6 +47,21 @@ describe("Gilded Rose", function() {
     expect(items[0].sellIn).to.equal(0);
   })
 
+  it("If someone made a mistake when encoding a legendary item", function() {
+    const gildedRose = new Shop([
+      new Item("Sulfuras, Hand of Ragnaros", 0, 12),
+      new Item("Sulfuras, Hand of Ragnaros", 0, 123)
+    ]);
+    let items;
+    for (let day = 0; day < days; day++) {
+      items = gildedRose.updateQuality();
+    }
+    expect(items[0].quality).to.equal(80);
+    expect(items[0].sellIn).to.equal(0);
+    expect(items[1].quality).to.equal(80);
+    expect(items[1].sellIn).to.equal(0);
+  })
+
   it("Standard quality items down everyday", function() {
     const gildedRose = new Shop([ new Item("+1 Speed Boots", 10, 40)]);
     let items;

@@ -80,6 +80,8 @@ class Shop {
       if (useCaseName !== 'LEGEND') {
         this.items[i].sellIn = updatedSellIn;
         this.items[i].quality = updatedQuality;
+      } else {
+        this.items[i].quality = 80;
       }
     }
     return this.items;
