@@ -1,5 +1,13 @@
 # GildedRose Kata Refactoring
 
+**_Launch the project_**
+
+- npm install
+
+**_Launch the test_**
+
+- npm test
+
 I have to refactor this exercise.
 
 My goal was to write readable code that was open to modification.
@@ -8,17 +16,18 @@ I think when you subdivide your code with functions it will be easier to read. A
 ## Check the variable from the items
 
 I write three checks for each variables contain by the items object.
-I was not "realy" auhtorized to change this object so I prefer don't do that.
+I was not **_realy_** auhtorized to change this object so I prefer don't do that.
 
 ### CheckItemsName
 
-This function have to goal to find the "type" of the object.
+This function have to goal to find the **_type_** of the object.
 For now we:
-• The normal object
-• The conjured one
-• The Aged Brie
-• Ticket for concert
-• The legendary object
+
+- The normal object
+- The conjured one
+- The Aged Brie
+- Ticket for concert
+- The legendary object
 
 In the begining example the code compare all the name string of the diffeent object, so I do the same.
 
@@ -42,6 +51,6 @@ This function check if the quality don't go up over 50 and go down under 0
 
 I use a ternaire operation for this one because I like it, and to gain some line.
 
-By my comprehension the quality is the variable are most changed, because each object change by it's own rules and depending dy de "sellIn" variable.
+By my comprehension the quality is the variable are most changed, because each object change by it's own rules and depending dy de **_sellIn_** variable.
 
 The legendary object are immutable.
