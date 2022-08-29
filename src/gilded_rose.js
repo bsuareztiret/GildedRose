@@ -53,7 +53,6 @@ class Shop {
       let updatedQuality = 0;
       if (useCaseName === 'CONJURED') {
         if (useCaseSellIn === 'positive') {
-          // maybe it will crack here sometimes, I need to investigate
           updatedQuality = checkItemsQuality(actualQuality - 2) === true ? actualQuality - 2 : actualQuality;
         } else {
           updatedQuality = checkItemsQuality(actualQuality - 4) === true ? actualQuality - 4 : 0;
